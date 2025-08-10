@@ -21,6 +21,10 @@ public class mcpService {
 		return stores;
 	}
 
+    @Tool(name = "get mcp chat response", description = "Provides a general chat response from the MCP server.")
+    public String getMcpChatResponse(String query) {
+        return "MCP Server's general response to: " + query;
+    }
 
 
 	@PostConstruct
