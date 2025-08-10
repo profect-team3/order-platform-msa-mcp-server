@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: mcp-server
+  config:
+    import: optional:file:.env[.properties]
+  ai:
+    mcp:
+      server:
+        name: team3-mcp
+        version: 0.0.1
+
+
+server:
+  port: 8093
