@@ -2,30 +2,44 @@ package mcpserver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import jakarta.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
-
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class mcpService {
 	private static final Logger log = LoggerFactory.getLogger(mcpService.class);
 	private final List<GetStoreListResponse> stores = new ArrayList<>();
 
-	@Tool(name = "get store info", description = "get store info")
-	public List<GetStoreListResponse> getStores(){
-		return stores;
+	@Tool(name = "get_store_info", description = "Get information about stores, optionally filtered by store name. Returns a formatted string of stores matching the criteria.")
+	public String getStoreInfo(String storeName){
+		List<GetStoreListResponse> filteredStores;
+		if (storeName == null || storeName.isEmpty()) {
+			filteredStores = stores;
+		} else {
+			filteredStores = stores.stream()
+				.filter(store -> store.getStoreName().toLowerCase().contains(storeName.toLowerCase()))
+				.collect(Collectors.toList());
+		}
+		if (filteredStores.isEmpty()) {
+			return "No stores found with that name.";
+		}
+
+		return filteredStores.stream()
+			.map(store -> String.format("""
+                    Store Name: %s,
+                    Address: %s,
+                    Minimum Order Amount: %d,
+                    Average Rating: %.1f
+                    """, store.getStoreName(), store.getAddress(), store.getMinOrderAmount(), store.getAverageRating()))
+			.collect(Collectors.joining("\n"));
 	}
-
-    @Tool(name = "get mcp chat response", description = "Provides a general chat response from the MCP server.")
-    public String getMcpChatResponse(String query) {
-        return "MCP Server's general response to: " + query;
-    }
-
 
 	@PostConstruct
 	public void init() {
