@@ -7,14 +7,8 @@ spring:
     mcp:
       server:
         name: webflux-mcp-server
-        version: 0.0.1
-#        sse-endpoint: /sse
-#        sse-message-endpoint: /mcp/messages
-#        capabilities:
-#          tool: true
-#          resource: true
-#          prompt: true
-#          completion: true
+        version: 1.0.0
+
 logging:
   level:
     org:
