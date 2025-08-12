@@ -14,6 +14,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import mcpserver.internal.InternalGetMenuByStoreId;
+
 @SpringBootApplication
 public class McpServerApplication {
 	private static final Logger logger = LoggerFactory.getLogger(McpServerApplication.class);
@@ -22,13 +24,8 @@ public class McpServerApplication {
 		SpringApplication.run(McpServerApplication.class, args);
 	}
 
-	// @Bean
-	// public List<ToolCallback> storeTools(mcpService mcpService){
-	// 	return List.of(ToolCallbacks.from(mcpService));
-	// }
-
 	@Bean
-	public ToolCallbackProvider storeTools(mcpService mcpService) {
-		return MethodToolCallbackProvider.builder().toolObjects(mcpService).build();
+	public ToolCallbackProvider storeTools(InternalGetMenuByStoreId internalGetMenuByStoreId) {
+		return MethodToolCallbackProvider.builder().toolObjects(internalGetMenuByStoreId).build();
 	}
 }

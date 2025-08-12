@@ -18,3 +18,7 @@ logging:
 
 server:
   port: 8099
+
+service:
+  store:
+    url: http://localhost:8082
