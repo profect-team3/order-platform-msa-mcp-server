@@ -1,6 +1,7 @@
 package mcpserver.internal;
 
 import mcpserver.config.PagedResponse;
+import mcpserver.config.apiPayload.ApiResponse;
 import mcpserver.internal.dto.ClientMenuInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,23 +37,28 @@ public class InternalGetMenuByStoreId {
     public List<ClientMenuInfo> getMenusByStoreId(String storeId) {
         String url = storeServiceUrl + "/menu/" + storeId;
         log.info("Requesting menus for storeId: {} from URL: {}", storeId, url);
-        try {
-            ParameterizedTypeReference<PagedResponse<ClientMenuInfo>> responseType = new ParameterizedTypeReference<>() {};
 
-            ResponseEntity<PagedResponse<ClientMenuInfo>> response = restTemplate.exchange(
+        ParameterizedTypeReference<ApiResponse<PagedResponse<ClientMenuInfo>>> responseType =
+            new ParameterizedTypeReference<>() {};
+        try {
+            ResponseEntity<ApiResponse<PagedResponse<ClientMenuInfo>>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
                 responseType
             );
-            PagedResponse<ClientMenuInfo> pagedResponse = response.getBody();
-            if (pagedResponse.getContent() != null) {
-                log.info("Successfully fetched {} menus for storeId: {}", pagedResponse.getContent().size(), storeId);
-                return pagedResponse.getContent();
-            } else {
-                log.warn("Fetched a null or empty response for storeId: {}", storeId);
-                return Collections.emptyList();
+            ApiResponse<PagedResponse<ClientMenuInfo>> apiResponse = response.getBody();
+
+            if (apiResponse != null && Boolean.TRUE.equals(apiResponse.isSuccess())) {
+                PagedResponse<ClientMenuInfo> pagedResponse = apiResponse.result();
+
+                if (pagedResponse != null && pagedResponse.getContent() != null) {
+                    log.info("Successfully fetched {} menus for storeId: {}", pagedResponse.getContent().size(), storeId);
+                    return pagedResponse.getContent();
+                }
             }
+            log.warn("Fetched a null or empty response for storeId: {}", storeId);
+            return Collections.emptyList();
         } catch (RestClientException e) {
             log.error("Failed to fetch menus for storeId: {}. Error: {}", storeId, e.getMessage());
             return Collections.emptyList();
