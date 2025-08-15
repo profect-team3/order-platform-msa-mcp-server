@@ -13,10 +13,6 @@ java {
 	}
 }
 
-repositories {
-	mavenCentral()
-}
-
 ext {
 	set('springAiVersion', "1.0.1")
 }
