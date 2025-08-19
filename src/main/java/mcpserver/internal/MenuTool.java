@@ -1,8 +1,9 @@
 package mcpserver.internal;
 
-import mcpserver.config.PagedResponse;
 import mcpserver.config.apiPayload.ApiResponse;
-import mcpserver.internal.dto.ClientMenuInfo;
+import mcpserver.internal.dto.MenuInfo;
+import mcpserver.internal.dto.store.MenuCollection;
+import mcpserver.internal.dto.store.StoreCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
@@ -13,19 +14,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
-public class InternalGetMenuByStoreId {
+public class MenuTool {
 
-    private static final Logger log = LoggerFactory.getLogger(InternalGetMenuByStoreId.class);
+    private static final Logger log = LoggerFactory.getLogger(MenuTool.class);
     private final RestTemplate restTemplate;
     private final String storeServiceUrl;
 
-    public InternalGetMenuByStoreId(RestTemplate restTemplate,
+    public MenuTool(RestTemplate restTemplate,
                                     @Value("${service.store.url}") String storeServiceUrl) {
         this.restTemplate = restTemplate;
         this.storeServiceUrl = storeServiceUrl;
@@ -34,27 +36,37 @@ public class InternalGetMenuByStoreId {
     @Tool(name = "get_menus_by_store_id",
             description = "Fetches a list of menus for a specific store, identified by its ID. "
                     + "The method requires the 'storeId' as a parameter.")
-    public List<ClientMenuInfo> getMenusByStoreId(String storeId) {
-        String url = storeServiceUrl + "/menu/" + storeId;
-        log.info("Requesting menus for storeId: {} from URL: {}", storeId, url);
+    public List<MenuInfo> getMenusByStoreId(String storeId) {
+        String url = UriComponentsBuilder.fromHttpUrl(storeServiceUrl)
+                .path("/mongo/stores/{storeId}")
+                .buildAndExpand(storeId)
+                .toUriString();
+        log.info("Requesting store details for storeId: {} from URL: {}", storeId, url);
 
-        ParameterizedTypeReference<ApiResponse<PagedResponse<ClientMenuInfo>>> responseType =
+        ParameterizedTypeReference<ApiResponse<StoreCollection>> responseType =
             new ParameterizedTypeReference<>() {};
         try {
-            ResponseEntity<ApiResponse<PagedResponse<ClientMenuInfo>>> response = restTemplate.exchange(
+            ResponseEntity<ApiResponse<StoreCollection>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
                 responseType
             );
-            ApiResponse<PagedResponse<ClientMenuInfo>> apiResponse = response.getBody();
+            ApiResponse<StoreCollection> apiResponse = response.getBody();
 
             if (apiResponse != null && Boolean.TRUE.equals(apiResponse.isSuccess())) {
-                PagedResponse<ClientMenuInfo> pagedResponse = apiResponse.result();
+                StoreCollection store = apiResponse.result();
 
-                if (pagedResponse != null && pagedResponse.getContent() != null) {
-                    log.info("Successfully fetched {} menus for storeId: {}", pagedResponse.getContent().size(), storeId);
-                    return pagedResponse.getContent();
+                if (store != null && store.getMenus() != null) {
+                    log.info("Successfully fetched {} menus for storeId: {}", store.getMenus().size(), storeId);
+                    return store.getMenus().stream()
+                            .map(menu -> MenuInfo.builder()
+                                    .menuId(menu.getMenuId())
+                                    .menuName(menu.getName())
+                                    .price(menu.getPrice())
+                                    .description(menu.getDescription())
+                                    .build())
+                            .collect(Collectors.toList());
                 }
             }
             log.warn("Fetched a null or empty response for storeId: {}", storeId);

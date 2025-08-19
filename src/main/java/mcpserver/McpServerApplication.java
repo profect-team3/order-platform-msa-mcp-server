@@ -8,7 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import mcpserver.internal.InternalGetMenuByStoreId;
+import mcpserver.internal.MenuTool;
+import mcpserver.internal.StoreTool;
 
 @SpringBootApplication
 public class McpServerApplication {
@@ -19,7 +20,7 @@ public class McpServerApplication {
 	}
 
 	@Bean
-	public ToolCallbackProvider storeTools(InternalGetMenuByStoreId internalGetMenuByStoreId) {
-		return MethodToolCallbackProvider.builder().toolObjects(internalGetMenuByStoreId).build();
+	public ToolCallbackProvider storeTools(MenuTool menuTool, StoreTool storeTool) {
+		return MethodToolCallbackProvider.builder().toolObjects(storeTool, menuTool).build();
 	}
 }
