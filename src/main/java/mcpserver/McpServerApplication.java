@@ -8,7 +8,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import mcpserver.internal.CartTool;
 import mcpserver.internal.MenuTool;
+import mcpserver.internal.OrderTool;
 import mcpserver.internal.StoreTool;
 
 @SpringBootApplication
@@ -20,7 +22,7 @@ public class McpServerApplication {
 	}
 
 	@Bean
-	public ToolCallbackProvider storeTools(MenuTool menuTool, StoreTool storeTool) {
-		return MethodToolCallbackProvider.builder().toolObjects(storeTool, menuTool).build();
+	public ToolCallbackProvider storeTools(MenuTool menuTool, StoreTool storeTool, CartTool cartTool, OrderTool orderTool) {
+		return MethodToolCallbackProvider.builder().toolObjects(storeTool, menuTool, cartTool, orderTool).build();
 	}
 }

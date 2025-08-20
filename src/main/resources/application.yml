@@ -19,6 +19,8 @@ logging:
 service:
   store:
     url: http://localhost:8082
+  item:
+    url: http://localhost:8084
 
 server:
   port: 8099
