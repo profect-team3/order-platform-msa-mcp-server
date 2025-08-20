@@ -1,12 +1,12 @@
-package mcpserver.internal.dto.order;
+package app.internal.dto.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import mcpserver.internal.dto.order.enums.OrderChannel;
-import mcpserver.internal.dto.order.enums.PaymentMethod;
-import mcpserver.internal.dto.order.enums.ReceiptMethod;
+import app.internal.dto.order.enums.OrderChannel;
+import app.internal.dto.order.enums.PaymentMethod;
+import app.internal.dto.order.enums.ReceiptMethod;
 
 @Data
 @Builder

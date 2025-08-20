@@ -1,4 +1,4 @@
-package mcpserver.internal.dto.store;
+package app.internal.dto.store;
 
 import lombok.Getter;
 import lombok.Setter;

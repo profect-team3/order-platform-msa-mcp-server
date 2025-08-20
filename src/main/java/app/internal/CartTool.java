@@ -1,7 +1,7 @@
-package mcpserver.internal;
+package app.internal;
 
-import mcpserver.config.apiPayload.ApiResponse;
-import mcpserver.internal.dto.cart.CartItemRequest;
+import app.config.apiPayload.ApiResponse;
+import app.internal.dto.cart.CartItemRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;

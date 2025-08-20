@@ -1,4 +1,4 @@
-package mcpserver;
+package app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,10 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import mcpserver.internal.CartTool;
-import mcpserver.internal.MenuTool;
-import mcpserver.internal.OrderTool;
-import mcpserver.internal.StoreTool;
+import app.internal.CartTool;
+import app.internal.MenuTool;
+import app.internal.OrderTool;
+import app.internal.StoreTool;
 
 @SpringBootApplication
 public class McpServerApplication {

@@ -1,4 +1,4 @@
-package mcpserver.internal.dto.order.enums;
+package app.internal.dto.order.enums;
 
 public enum OrderChannel {
     OFFLINE,

@@ -1,4 +1,4 @@
-package mcpserver.internal.dto.cart;
+package app.internal.dto.cart;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

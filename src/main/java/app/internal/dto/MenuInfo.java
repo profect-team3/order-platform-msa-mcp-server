@@ -1,6 +1,4 @@
-package mcpserver.internal.dto;
-
-import java.util.UUID;
+package app.internal.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

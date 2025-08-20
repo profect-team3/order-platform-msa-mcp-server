@@ -1,4 +1,4 @@
-package mcpserver.config.apiPayload;
+package app.config.apiPayload;
 
 import org.springframework.http.HttpStatus;
 

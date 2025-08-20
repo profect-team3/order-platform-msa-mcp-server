@@ -1,4 +1,4 @@
-package mcpserver.config;
+package app.config;
 
 import java.time.Duration;
 

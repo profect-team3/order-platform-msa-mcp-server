@@ -1,4 +1,4 @@
-package mcpserver.internal.dto;
+package app.internal.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

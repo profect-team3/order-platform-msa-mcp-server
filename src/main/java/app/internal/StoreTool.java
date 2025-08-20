@@ -1,8 +1,8 @@
-package mcpserver.internal;
+package app.internal;
 
-import mcpserver.config.apiPayload.ApiResponse;
-import mcpserver.internal.dto.StoreInfo;
-import mcpserver.internal.dto.store.StoreCollection;
+import app.config.apiPayload.ApiResponse;
+import app.internal.dto.StoreInfo;
+import app.internal.dto.store.StoreCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
 import java.util.List;

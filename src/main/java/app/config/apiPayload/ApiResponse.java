@@ -1,4 +1,4 @@
-package mcpserver.config.apiPayload;
+package app.config.apiPayload;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
