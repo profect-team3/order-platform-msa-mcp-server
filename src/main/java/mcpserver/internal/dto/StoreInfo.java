@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StoreInfo {
-    private String id;
+    private String storeId;
     private String storeName;
     private String description;
     private String address;

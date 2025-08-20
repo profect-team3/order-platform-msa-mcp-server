@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class StoreCollection {
-    private String id;
+    private String storeId;
     private Long userId;
     private String storeName;
     private String description;

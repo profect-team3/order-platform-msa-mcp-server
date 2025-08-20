@@ -35,10 +35,7 @@ public class StoreTool {
     @Tool(name = "search_stores",
             description = "Searches for stores by a keyword. The method requires the 'keyword' as a parameter.")
     public List<StoreInfo> searchStores(String keyword) {
-        String url = UriComponentsBuilder.fromHttpUrl(storeServiceUrl)
-                .path("/mongo/stores/search")
-                .queryParam("keyword", keyword)
-                .toUriString();
+        String url = storeServiceUrl + "/mongo/stores/search?keyword=" + keyword;
         log.info("Requesting stores with keyword: {} from URL: {}", keyword, url);
 
         ParameterizedTypeReference<ApiResponse<List<StoreCollection>>> responseType =
@@ -58,7 +55,7 @@ public class StoreTool {
                     log.info("Successfully fetched {} stores for keyword: {}", stores.size(), keyword);
                     return stores.stream()
                             .map(store -> StoreInfo.builder()
-                                    .id(store.getId())
+                                    .storeId(store.getStoreId())
                                     .storeName(store.getStoreName())
                                     .description(store.getDescription())
                                     .address(store.getAddress())

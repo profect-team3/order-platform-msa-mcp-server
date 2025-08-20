@@ -38,9 +38,9 @@ public class MenuTool {
                     + "The method requires the 'storeId' as a parameter.")
     public List<MenuInfo> getMenusByStoreId(String storeId) {
         String url = UriComponentsBuilder.fromHttpUrl(storeServiceUrl)
-                .path("/mongo/stores/{storeId}")
-                .buildAndExpand(storeId)
-                .toUriString();
+            .path("/mongo/stores/{storeId}")
+            .buildAndExpand(storeId)
+            .toUriString();
         log.info("Requesting store details for storeId: {} from URL: {}", storeId, url);
 
         ParameterizedTypeReference<ApiResponse<StoreCollection>> responseType =
