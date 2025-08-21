@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class OrderTool {
@@ -27,24 +28,27 @@ public class OrderTool {
     private final String orderServiceUrl;
 
     public OrderTool(RestTemplate restTemplate,
-                     @Value("${service.item.url}") String orderServiceUrl) {
+                     @Value("${service.order.url}") String orderServiceUrl) {
         this.restTemplate = restTemplate;
         this.orderServiceUrl = orderServiceUrl;
     }
 
     @Tool(name = "place_order",
             description = "Places an order based on the user's cart. "
-                    + "Requires paymentMethod, orderChannel, receiptMethod, totalPrice, and deliveryAddress.")
+                    + "Requires 'paymentMethod', 'orderChannel', 'receiptMethod', 'totalPrice', 'deliveryAddress', and 'userId'.")
     public String placeOrder(
             PaymentMethod paymentMethod,
             OrderChannel orderChannel,
             ReceiptMethod receiptMethod,
             String requestMessage,
             int totalPrice,
-            String deliveryAddress) {
+            String deliveryAddress,
+            String userId) {
 
-        String url = orderServiceUrl + "/";
-        log.info("Requesting to place an order to URL: {}", url);
+        String url = UriComponentsBuilder.fromHttpUrl(orderServiceUrl + "/mcp/order")
+                .queryParam("userId", userId)
+                .toUriString();
+        log.info("Requesting to place an order for userId: {} to URL: {}", userId, url);
 
         OrderRequest requestPayload = OrderRequest.builder()
                 .paymentMethod(paymentMethod)
