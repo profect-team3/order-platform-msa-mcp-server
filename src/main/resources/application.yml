@@ -8,16 +8,7 @@ spring:
       server:
         name: webflux-mcp-server
         version: 1.0.0
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: ${OAUTH_JWKS_URI:http://localhost:8083/oauth/jwks}
 
-
-
-jwt:
-  audience:  ${AUTH_INTERNAL_AUDIENCE:internal-services}
 logging:
   level:
     org:
@@ -28,7 +19,7 @@ logging:
 service:
   store:
     url: http://localhost:8082
-  item:
+  order:
     url: http://localhost:8084
 
 server:
