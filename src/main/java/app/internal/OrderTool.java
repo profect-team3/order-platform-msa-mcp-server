@@ -34,14 +34,17 @@ public class OrderTool {
     }
 
     @Tool(name = "place_order",
-            description = "Places an order based on the user's cart. "
-                    + "Requires 'paymentMethod', 'orderChannel', 'receiptMethod', 'totalPrice', 'deliveryAddress', and 'userId'.")
+        description = "Places an order based on the user's cart. "
+            + "Requires 'paymentMethod' (one of CREDIT_CARD, SIMPLE_PAY, BANK_TRANSFER, or CASH), "
+            + "'orderChannel' (one of OFFLINE or ONLINE), "
+            + "'receiptMethod' (one of DELIVERY, TAKE_OUT, or TAKE_IN), "
+            + "'totalPrice', 'deliveryAddress', and 'userId'.")
     public String placeOrder(
             PaymentMethod paymentMethod,
             OrderChannel orderChannel,
             ReceiptMethod receiptMethod,
             String requestMessage,
-            int totalPrice,
+            Long totalPrice,
             String deliveryAddress,
             String userId) {
 

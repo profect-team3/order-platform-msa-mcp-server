@@ -32,15 +32,14 @@ public class MenuTool {
         this.storeServiceUrl = storeServiceUrl;
     }
 
-    @Tool(name = "get_menus_by_store_id",
-            description = "Fetches a list of menus for a specific store, identified by its ID. "
-                    + "The method requires the 'storeId' as a parameter.")
-    public List<MenuInfo> getMenusByStoreId(String storeId) {
+    @Tool(name = "get_menus_by_storeKey",
+        description = "Fetches a list of menus for a specific store. Requires the 'storeKey'")
+    public List<MenuInfo> getMenusByStoreKey(String storeKey) {
         String url = UriComponentsBuilder.fromHttpUrl(storeServiceUrl)
-            .path("/mongo/stores/{storeId}")
-            .buildAndExpand(storeId)
+            .path("/mongo/stores/{storeKey}")
+            .buildAndExpand(storeKey)
             .toUriString();
-        log.info("Requesting store details for storeId: {} from URL: {}", storeId, url);
+        log.info("Requesting store details for storeId: {} from URL: {}", storeKey, url);
 
         ParameterizedTypeReference<ApiResponse<StoreCollection>> responseType =
             new ParameterizedTypeReference<>() {};
@@ -57,7 +56,7 @@ public class MenuTool {
                 StoreCollection store = apiResponse.result();
 
                 if (store != null && store.getMenus() != null) {
-                    log.info("Successfully fetched {} menus for storeId: {}", store.getMenus().size(), storeId);
+                    log.info("Successfully fetched {} menus for storeId: {}", store.getMenus().size(), storeKey);
                     return store.getMenus().stream()
                             .map(menu -> MenuInfo.builder()
                                     .menuId(menu.getMenuId())
@@ -68,10 +67,10 @@ public class MenuTool {
                             .collect(Collectors.toList());
                 }
             }
-            log.warn("Fetched a null or empty response for storeId: {}", storeId);
+            log.warn("Fetched a null or empty response for storeId: {}", storeKey);
             return Collections.emptyList();
         } catch (RestClientException e) {
-            log.error("Failed to fetch menus for storeId: {}. Error: {}", storeId, e.getMessage());
+            log.error("Failed to fetch menus for storeId: {}. Error: {}", storeKey, e.getMessage());
             return Collections.emptyList();
         }
     }

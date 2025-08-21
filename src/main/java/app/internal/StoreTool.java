@@ -6,6 +6,7 @@ import app.internal.dto.store.StoreCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.aop.scope.ScopedProxyUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -51,10 +52,12 @@ public class StoreTool {
             if (apiResponse != null && Boolean.TRUE.equals(apiResponse.isSuccess())) {
                 List<StoreCollection> stores = apiResponse.result();
                 if (stores != null) {
+                    System.out.println(stores.toString());
                     log.info("Successfully fetched {} stores for keyword: {}", stores.size(), keyword);
+                    stores.forEach(store -> log.info("  - Store Info: storeKey={}, storeName='{}'", store.getStoreKey(), store.getStoreName()));
                     return stores.stream()
                             .map(store -> StoreInfo.builder()
-                                    .storeId(store.getStoreId())
+                                    .storeKey(store.getStoreKey())
                                     .storeName(store.getStoreName())
                                     .description(store.getDescription())
                                     .address(store.getAddress())
