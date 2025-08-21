@@ -20,17 +20,22 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class OrderTool {
 
     private static final Logger log = LoggerFactory.getLogger(OrderTool.class);
     private final RestTemplate restTemplate;
     private final String orderServiceUrl;
+    private final ObjectMapper objectMapper;
 
-    public OrderTool(RestTemplate restTemplate,
+    public OrderTool(RestTemplate restTemplate, ObjectMapper objectMapper,
                      @Value("${service.order.url}") String orderServiceUrl) {
         this.restTemplate = restTemplate;
         this.orderServiceUrl = orderServiceUrl;
+        this.objectMapper = objectMapper;
     }
 
     @Tool(name = "place_order",
@@ -52,7 +57,6 @@ public class OrderTool {
                 .queryParam("userId", userId)
                 .toUriString();
         log.info("Requesting to place an order for userId: {} to URL: {}", userId, url);
-
         OrderRequest requestPayload = OrderRequest.builder()
                 .paymentMethod(paymentMethod)
                 .orderChannel(orderChannel)
@@ -61,7 +65,12 @@ public class OrderTool {
                 .totalPrice(totalPrice)
                 .deliveryAddress(deliveryAddress)
                 .build();
-
+        try {
+            String jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestPayload);
+            log.info("Request Payload (JSON): \n{}", jsonPayload);
+        } catch (JsonProcessingException e) {
+            log.error("Failed to convert payload to JSON string: {}", e.getMessage());
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(requestPayload, headers);

@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public class StoreCollection {
-    private String storeKey;
     private Long userId;
+    private String storeKey;
     private String storeName;
     private String description;
     private List<String> categoryKeys;
