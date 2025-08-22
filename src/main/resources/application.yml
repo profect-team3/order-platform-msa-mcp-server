@@ -18,9 +18,9 @@ logging:
 
 service:
   store:
-    url: http://localhost:8082
+    url: ${STORE_SVC_URI:http://localhost:8082}
   order:
-    url: http://localhost:8084
+    url: ${ORDER_SVC_URI:http://localhost:8084}
 
 server:
   port: 8099
