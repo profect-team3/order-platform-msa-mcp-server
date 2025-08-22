@@ -1,5 +1,7 @@
 package app.internal;
 
+import java.util.UUID;
+
 import app.config.apiPayload.ApiResponse;
 import app.internal.dto.cart.CartItemRequest;
 import org.slf4j.Logger;
@@ -30,9 +32,13 @@ public class CartTool {
         this.itemServiceUrl = itemServiceUrl;
     }
 
-    @Tool(name = "add_item_to_cart",
-            description = "Adds an item to the shopping cart. Requires the 'menuId' (the unique identifier for a menu item, not its name), the 'storeId' (the unique identifier for the store, which is a long alphanumeric string, not the store's name), the 'quantity' (as an integer), and the 'userId'.")
-    public String addItemToCart(String menuId, String storeId, int quantity, String userId) {
+    @Tool(name = "add_item_to_cart_by_menuId_and_storeKey_from_context",
+            description = "Adds an item to the shopping cart. Requires the 'menuId' (the unique identifier for a menu item, not its name), "
+                + "the 'storeKey' (the store's **UUID string**, e.g., '02a5f21e-2a11-4eb8-b7d9-40e507f5cde4', not the store's name or any other '_id' field), "
+                + "the 'quantity' (as an integer), and the 'userId'.")
+    // @Tool(name = "add_item_to_cart_by_menuId_and_storeId_from_context",
+    //     description = "장바구니에 상품을 추가합니다. 'menuId'(메뉴 항목의 고유 식별자, 이름 아님), 'storeId'(상점의 고유 식별자, 상점 이름이 아닌 긴 영숫자 문자열), 'quantity'(정수), 'userId'가 필요합니다.")
+    public String addItemToCart(String menuId, String storeId, String quantity, String userId) {
         String url = UriComponentsBuilder.fromHttpUrl(itemServiceUrl + "/mcp/cart")
                 .queryParam("userId", userId)
                 .toUriString();
@@ -40,9 +46,9 @@ public class CartTool {
             menuId, storeId, quantity, userId, url);
 
         CartItemRequest requestPayload = CartItemRequest.builder()
-                .menuId(menuId)
-                .storeId(storeId)
-                .quantity(quantity)
+                .menuId(UUID.fromString(menuId))
+                .storeId(UUID.fromString(storeId))
+                .quantity(Long.parseLong(quantity))
                 .build();
 
         HttpHeaders headers = new HttpHeaders();

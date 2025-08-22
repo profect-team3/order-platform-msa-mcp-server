@@ -17,6 +17,6 @@ public class OrderRequest {
     private OrderChannel orderChannel;
     private ReceiptMethod receiptMethod;
     private String requestMessage;
-    private int totalPrice;
+    private Long totalPrice;
     private String deliveryAddress;
 }

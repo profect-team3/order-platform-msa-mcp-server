@@ -1,5 +1,7 @@
 package app.internal.dto.cart;
 
+import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItemRequest {
-    private String menuId;
-    private String storeId;
-    private int quantity;
+    private UUID menuId;
+    private UUID storeId;
+    private Long quantity;
 }

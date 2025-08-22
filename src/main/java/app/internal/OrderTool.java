@@ -20,28 +20,36 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class OrderTool {
 
     private static final Logger log = LoggerFactory.getLogger(OrderTool.class);
     private final RestTemplate restTemplate;
     private final String orderServiceUrl;
+    private final ObjectMapper objectMapper;
 
-    public OrderTool(RestTemplate restTemplate,
+    public OrderTool(RestTemplate restTemplate, ObjectMapper objectMapper,
                      @Value("${service.order.url}") String orderServiceUrl) {
         this.restTemplate = restTemplate;
         this.orderServiceUrl = orderServiceUrl;
+        this.objectMapper = objectMapper;
     }
 
     @Tool(name = "place_order",
-            description = "Places an order based on the user's cart. "
-                    + "Requires 'paymentMethod', 'orderChannel', 'receiptMethod', 'totalPrice', 'deliveryAddress', and 'userId'.")
+        description = "Places an order based on the user's cart. "
+            + "Requires 'paymentMethod' (one of CREDIT_CARD, SIMPLE_PAY, BANK_TRANSFER, or CASH), "
+            + "'orderChannel' (one of OFFLINE or ONLINE), "
+            + "'receiptMethod' (one of DELIVERY, TAKE_OUT, or TAKE_IN), "
+            + "'totalPrice', 'deliveryAddress', and 'userId'.")
     public String placeOrder(
             PaymentMethod paymentMethod,
             OrderChannel orderChannel,
             ReceiptMethod receiptMethod,
             String requestMessage,
-            int totalPrice,
+            Long totalPrice,
             String deliveryAddress,
             String userId) {
 
@@ -49,7 +57,6 @@ public class OrderTool {
                 .queryParam("userId", userId)
                 .toUriString();
         log.info("Requesting to place an order for userId: {} to URL: {}", userId, url);
-
         OrderRequest requestPayload = OrderRequest.builder()
                 .paymentMethod(paymentMethod)
                 .orderChannel(orderChannel)
@@ -58,7 +65,12 @@ public class OrderTool {
                 .totalPrice(totalPrice)
                 .deliveryAddress(deliveryAddress)
                 .build();
-
+        try {
+            String jsonPayload = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(requestPayload);
+            log.info("Request Payload (JSON): \n{}", jsonPayload);
+        } catch (JsonProcessingException e) {
+            log.error("Failed to convert payload to JSON string: {}", e.getMessage());
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(requestPayload, headers);
