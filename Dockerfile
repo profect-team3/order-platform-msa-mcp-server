@@ -8,7 +8,7 @@ COPY order-platform-msa-mcp-server/build.cloud.gradle ./order-platform-msa-mcp-s
 
 RUN ./gradlew :order-platform-msa-mcp-server:bootJar -x test
 
-FROM eclipse-temurin:17-jre-slim
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
 COPY --from=builder /workspace/order-platform-msa-mcp-server/build/libs/*-boot.jar /app/application.jar
