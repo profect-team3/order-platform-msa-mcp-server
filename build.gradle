@@ -13,10 +13,6 @@ java {
 	}
 }
 
-repositories {
-	mavenCentral()
-}
-
 ext {
 	set('springAiVersion', "1.0.1")
 }
@@ -24,15 +20,15 @@ ext {
 
 
 dependencies {
-	implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webflux'
+	implementation 'org.springframework.ai:spring-ai-starter-mcp-server-webmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
 }
 dependencyManagement {
 

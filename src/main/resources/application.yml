@@ -16,5 +16,11 @@ logging:
         ai:
           mcp: TRACE
 
+service:
+  store:
+    url: ${STORE_SVC_URI:http://localhost:8082}
+  order:
+    url: ${ORDER_SVC_URI:http://localhost:8084}
+
 server:
   port: 8099

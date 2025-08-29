@@ -1,18 +1,17 @@
-package mcpserver;
-
-import java.util.List;
-
-import javax.tools.Tool;
+package app;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ai.support.ToolCallbacks;
-import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import app.internal.CartTool;
+import app.internal.MenuTool;
+import app.internal.OrderTool;
+import app.internal.StoreTool;
 
 @SpringBootApplication
 public class McpServerApplication {
@@ -22,13 +21,8 @@ public class McpServerApplication {
 		SpringApplication.run(McpServerApplication.class, args);
 	}
 
-	// @Bean
-	// public List<ToolCallback> storeTools(mcpService mcpService){
-	// 	return List.of(ToolCallbacks.from(mcpService));
-	// }
-
 	@Bean
-	public ToolCallbackProvider storeTools(mcpService mcpService) {
-		return MethodToolCallbackProvider.builder().toolObjects(mcpService).build();
+	public ToolCallbackProvider storeTools(MenuTool menuTool, StoreTool storeTool, CartTool cartTool, OrderTool orderTool) {
+		return MethodToolCallbackProvider.builder().toolObjects(storeTool, menuTool, cartTool, orderTool).build();
 	}
 }
