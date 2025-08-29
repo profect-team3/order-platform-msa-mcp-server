@@ -27,5 +27,5 @@ jobs:
       - name: Build & Push mcp-server service
         run: |
           docker build -f Dockerfile -t order-test-ecr-mcpserver:latest .
-          # docker tag order-test-ecr-mcpserver:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/order-test-ecr-mcpserver:latest
-          # docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/order-test-ecr-mcpserver:latest
+          docker tag order-test-ecr-mcpserver:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/order-test-ecr-mcpserver:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.ap-northeast-2.amazonaws.com/order-test-ecr-mcpserver:latest
