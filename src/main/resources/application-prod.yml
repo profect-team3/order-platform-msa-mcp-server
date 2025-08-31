@@ -1,5 +1,4 @@
-service:
-  store:
-    url: ${STORE_SVC_URI}
-  order:
-    url: ${ORDER_SVC_URI}
+  STORE_SVC_URI:
+    ${STORE_SVC_URI}
+  ORDER_SVC_URI:
+    ${ORDER_SVC_URI}

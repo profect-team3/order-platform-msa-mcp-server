@@ -32,7 +32,7 @@ public class OrderTool {
     private final ObjectMapper objectMapper;
 
     public OrderTool(RestTemplate restTemplate, ObjectMapper objectMapper,
-                     @Value("${service.order.url}") String orderServiceUrl) {
+                     @Value("${ORDER_SVC_URI}") String orderServiceUrl) {
         this.restTemplate = restTemplate;
         this.orderServiceUrl = orderServiceUrl;
         this.objectMapper = objectMapper;

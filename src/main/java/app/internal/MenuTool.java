@@ -27,7 +27,7 @@ public class MenuTool {
     private final String storeServiceUrl;
 
     public MenuTool(RestTemplate restTemplate,
-                                    @Value("${service.store.url}") String storeServiceUrl) {
+                                    @Value("${STORE_SVC_URI}") String storeServiceUrl) {
         this.restTemplate = restTemplate;
         this.storeServiceUrl = storeServiceUrl;
     }

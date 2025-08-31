@@ -27,7 +27,7 @@ public class CartTool {
     private final String itemServiceUrl;
 
     public CartTool(RestTemplate restTemplate,
-                    @Value("${service.order.url}") String itemServiceUrl) {
+                    @Value("${ORDER_SVC_URI}") String itemServiceUrl) {
         this.restTemplate = restTemplate;
         this.itemServiceUrl = itemServiceUrl;
     }

@@ -27,7 +27,7 @@ public class StoreTool {
     private final String storeServiceUrl;
 
     public StoreTool(RestTemplate restTemplate,
-                               @Value("${service.store.url}") String storeServiceUrl) {
+                               @Value("${STORE_SVC_URI}") String storeServiceUrl) {
         this.restTemplate = restTemplate;
         this.storeServiceUrl = storeServiceUrl;
     }

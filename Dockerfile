@@ -9,9 +9,11 @@ COPY gradle ./gradle
 COPY build.cloud.gradle build.gradle
 COPY settings.gradle .
 
+RUN ./gradlew dependencies --no-daemon
+
 COPY src ./src
 
-RUN ./gradlew bootJar
+RUN ./gradlew bootJar --no-daemon
 
 FROM eclipse-temurin:17-jre-jammy
 
