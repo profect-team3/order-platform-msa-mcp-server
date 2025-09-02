@@ -1,0 +1,5 @@
+STORE_SVC_URI:
+  http://localhost:8082
+ORDER_SVC_URI:
+  http://localhost:8084
+
